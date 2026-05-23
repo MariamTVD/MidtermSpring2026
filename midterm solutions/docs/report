@@ -1,0 +1,234 @@
+ UNO Refactoring Project Report
+
+ Project Title
+
+Refactoring and Modularization of a Console-Based UNO Game in Java
+
+---
+
+ 1. Introduction
+
+The purpose of this project was to improve the structure, readability, and maintainability of an existing console-based UNO game written in Java.
+The original implementation contained tightly coupled logic, making the code difficult to maintain and extend.
+
+To address these issues, the project was refactored into multiple specialized classes, each responsible for a single aspect of the program. This approach follows object-oriented design principles and improves separation of concerns.
+
+The resulting application preserves the original game behavior while providing a cleaner and more organized codebase.
+
+---
+
+ 2. Project Objectives
+
+The main objectives of the refactoring process were:
+
+* Improve code readability
+* Reduce duplication and complexity
+* Separate game responsibilities into dedicated classes
+* Preserve original gameplay functionality
+* Improve maintainability and future extensibility
+* Follow clean coding practices
+
+---
+
+ 3. Technologies Used
+
+* Java
+* Object-Oriented Programming (OOP)
+* Console-based user interaction
+* ArrayList collections
+* Modular utility classes
+
+---
+
+ 4. System Structure
+
+The project was divided into several helper classes, each handling a specific responsibility.
+
+ Main.java
+
+The `Main` class acts as the central coordinator of the application.
+It connects the helper classes together and provides simplified access to game-related operations.
+
+Responsibilities:
+
+* Program entry point
+* Delegating actions to helper classes
+* Managing shared scanner input
+
+---
+
+ CardRules.java
+
+This class contains all logic related to UNO card interpretation and validation.
+
+Responsibilities:
+
+* Detecting card colors
+* Detecting card ranks/types
+* Extracting numeric values
+* Verifying legal moves
+* Calculating card point values
+
+Examples of supported cards:
+
+* `R7`
+* `BS`
+* `Y+2`
+* `W`
+* `W4`
+
+The class centralizes rule validation, making the rest of the application simpler and more maintainable.
+
+---
+
+ BotStrategy.java
+
+This class manages automated bot behavior.
+
+Responsibilities:
+
+* Selecting playable cards
+* Prioritizing special cards
+* Choosing the best color after wild cards
+* Applying simple decision-making logic
+
+The bot attempts to:
+
+1. Play Draw Two cards first
+2. Play Skip cards
+3. Play numeric cards
+4. Use Wild cards if necessary
+
+This creates predictable and stable bot behavior while keeping the implementation simple.
+
+---
+
+ ConsolePrompter.java
+
+This class handles all console-based interaction with the user.
+
+Responsibilities:
+
+* Requesting card choices
+* Validating user input
+* Requesting color selections
+* Displaying input error messages
+
+Separating input handling from game logic improves readability and follows clean architecture principles.
+
+---
+
+ ScoreCalculator.java
+
+This utility class calculates final UNO scores.
+
+Responsibilities:
+
+* Summing remaining cards in losing players’ hands
+* Ignoring the winning player’s hand
+* Using UNO point rules for calculations
+
+Point system:
+
+* Number cards → face value
+* Action cards → 20 points
+* Wild cards → 50 points
+
+---
+
+ 5. Refactoring Improvements
+
+Several improvements were introduced during the refactoring process.
+
+ 5.1 Separation of Concerns
+
+Each class now has a dedicated responsibility.
+This reduces dependencies and makes debugging easier.
+
+---
+
+ 5.2 Cleaner Main Class
+
+The `Main` class was simplified significantly by moving logic into helper classes.
+
+Benefits:
+
+* Easier navigation
+* Better readability
+* Reduced complexity
+
+---
+
+ 5.3 Reusable Utility Methods
+
+Repeated logic was extracted into reusable methods.
+
+Examples:
+
+* Card legality checking
+* Color extraction
+* Rank detection
+* Score calculations
+
+---
+
+ 5.4 Improved Maintainability
+
+The modular design allows future features to be added more easily, such as:
+
+* Multiplayer support
+* Graphical user interface
+* Advanced AI behavior
+* Additional UNO rules
+
+---
+
+ 6. Challenges Encountered
+
+Several challenges were addressed during the project:
+
+ Input Validation
+
+Handling invalid console input required repeated validation loops to prevent crashes.
+
+ Rule Consistency
+
+UNO legality rules had to remain consistent across both human and bot gameplay.
+
+ Preserving Existing Behavior
+
+The refactoring process needed to improve structure without changing the original gameplay mechanics.
+
+---
+
+ 7. Testing
+
+The refactored project was tested using various gameplay scenarios.
+
+Tested functionality included:
+
+* Legal and illegal card plays
+* Wild card color selection
+* Bot move selection
+* Score calculation accuracy
+* User input handling
+* Edge-case validation
+
+The refactored version preserved the intended functionality successfully.
+
+---
+
+ 8. Conclusion
+
+The project successfully transformed a monolithic UNO implementation into a modular and maintainable Java application.
+
+The refactoring improved:
+
+* Readability
+* Code organization
+* Reusability
+* Maintainability
+
+At the same time, the original gameplay behavior was preserved.
+
+The final result demonstrates how applying object-oriented principles and modular design can significantly improve software quality even in relatively small projects.
