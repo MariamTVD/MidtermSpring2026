@@ -1,0 +1,62 @@
+Extension Readiness
+
+Overview
+
+The refactored UNO project was redesigned with modularity and maintainability in mind.
+
+The system is now separated into specialized utility classes, making the application easier to extend and improve in future versions.
+
+
+Current Modular Structure
+
+The project separates responsibilities across multiple classes:
+
+Main → application coordination
+CardRules → card validation and rule processing
+BotStrategy → automated bot logic
+ConsolePrompter → user input handling
+ScoreCalculator → score computation
+
+This structure reduces coupling between components and improves code organization.
+
+Future Extension Possibilities
+
+The current architecture allows several future improvements to be implemented with minimal modifications.
+
+Possible extensions include:
+
+Graphical User Interface (GUI)
+
+The console interaction layer is isolated inside ConsolePrompter, making it easier to replace with a GUI implementation.
+
+Multiplayer Support
+
+Additional player management systems can be added without changing card rule logic.
+
+Advanced Bot AI
+
+The BotStrategy class can be expanded with more sophisticated decision-making algorithms.
+
+Additional UNO Rules
+
+Custom rules and house rules can be implemented inside CardRules while preserving the rest of the system.
+
+Save/Load Features
+
+Game state serialization can be added without major restructuring.
+
+Maintainability Benefits
+
+The refactoring improves maintainability by:
+
+reducing duplicated logic
+isolating responsibilities
+improving readability
+simplifying debugging and testing
+
+Each class now has a clearly defined purpose, making future development safer and more efficient.
+
+Conclusion
+
+The refactored project is well-prepared for future extensions due to its modular structure and separation of concerns.
+The new architecture supports scalability, easier maintenance, and cleaner integration of future features.
