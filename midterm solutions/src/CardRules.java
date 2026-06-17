@@ -1,10 +1,13 @@
+/** updated card rules: */
+
 /**
- * Stores utility logic related to the current card representation.
+ * Central place for card-related rule logic.
  *
- * Supported examples:
- * R7, BS, Y+2, W, W4.
+ * Cards are represented using the original string format:
+ * R5, YS, BR, G+2, W, W4.
  */
 public final class CardRules {
+
     private CardRules() {
     }
 
@@ -60,48 +63,43 @@ public final class CardRules {
         return Integer.parseInt(card.substring(1));
     }
 
-    static boolean isLegal(String candidate,
-                           String topCard,
-                           String forcedColor) {
-
+    static boolean isLegal(String candidate, String upCard, String calledColor) {
         if (candidate.startsWith("W")) {
             return true;
         }
 
-        if (color(candidate).equals(color(topCard))) {
+        if (!calledColor.equals("")) {
+            return color(candidate).equals(calledColor);
+        }
+
+        if (color(candidate).equals(color(upCard))) {
             return true;
         }
 
-        if (!forcedColor.equals("")
-                && color(candidate).equals(forcedColor)) {
-            return true;
-        }
-
-        if (rank(candidate).equals(rank(topCard))
-                && !rank(candidate).equals("NUMBER")) {
+        if (rank(candidate).equals(rank(upCard)) && !rank(candidate).equals("NUMBER")) {
             return true;
         }
 
         return rank(candidate).equals("NUMBER")
-                && rank(topCard).equals("NUMBER")
-                && number(candidate) == number(topCard);
+                && rank(upCard).equals("NUMBER")
+                && number(candidate) == number(upCard);
     }
 
     static int points(String card) {
-        String type = rank(card);
+        String rank = rank(card);
 
-        if (type.equals("NUMBER")) {
+        if (rank.equals("NUMBER")) {
             return number(card);
         }
 
-        if (type.equals("SKIP")
-                || type.equals("REVERSE")
-                || type.equals("DRAW_TWO")) {
+        if (rank.equals("SKIP")
+                || rank.equals("REVERSE")
+                || rank.equals("DRAW_TWO")) {
             return 20;
         }
 
-        if (type.equals("WILD")
-                || type.equals("WILD_DRAW_FOUR")) {
+        if (rank.equals("WILD")
+                || rank.equals("WILD_DRAW_FOUR")) {
             return 50;
         }
 
