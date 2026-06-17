@@ -1,33 +1,56 @@
+/** updated BotStrategy code: */
+
 import java.util.ArrayList;
 
 /**
- * Encapsulates automated bot decisions.
+ * Bot decision logic.
  *
- * Existing behavior is intentionally preserved.
+ * This keeps the automatic player behavior outside Main.
  */
 public final class BotStrategy {
+
     private BotStrategy() {
     }
 
-    static int selectPlayableCard(ArrayList<String> hand, String topCard, String activeColor) {
-        int plusTwo = locateRank(hand, topCard, activeColor, "DRAW_TWO");
-        if (plusTwo >= 0) {
-            return plusTwo;
+    static int chooseCard(ArrayList<String> hand, String upCard, String calledColor) {
+        int drawTwo = findLegalCardByRank(hand, upCard, calledColor, "DRAW_TWO");
+        if (drawTwo >= 0) {
+            return drawTwo;
         }
 
-        int skipCard = locateRank(hand, topCard, activeColor, "SKIP");
-        if (skipCard >= 0) {
-            return skipCard;
+        int skip = findLegalCardByRank(hand, upCard, calledColor, "SKIP");
+        if (skip >= 0) {
+            return skip;
         }
 
-        int numeric = locateRank(hand, topCard, activeColor, "NUMBER");
-        if (numeric >= 0) {
-            return numeric;
+        int number = findLegalCardByRank(hand, upCard, calledColor, "NUMBER");
+        if (number >= 0) {
+            return number;
         }
 
+        int reverse = findLegalCardByRank(hand, upCard, calledColor, "REVERSE");
+        if (reverse >= 0) {
+            return reverse;
+        }
+
+        for (int i = 0; i < hand.size(); i++) {
+            if (hand.get(i).startsWith("W")) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private static int findLegalCardByRank(ArrayList<String> hand,
+                                           String upCard,
+                                           String calledColor,
+                                           String wantedRank) {
         for (int i = 0; i < hand.size(); i++) {
             String card = hand.get(i);
-            if (card.startsWith("W")) {
+
+            if (CardRules.rank(card).equals(wantedRank)
+                    && CardRules.isLegal(card, upCard, calledColor)) {
                 return i;
             }
         }
@@ -35,23 +58,7 @@ public final class BotStrategy {
         return -1;
     }
 
-    private static int locateRank(ArrayList<String> hand,
-                                  String topCard,
-                                  String activeColor,
-                                  String desiredRank) {
-        for (int i = 0; i < hand.size(); i++) {
-            String current = hand.get(i);
-
-            if (CardRules.rank(current).equals(desiredRank)
-                    && CardRules.isLegal(current, topCard, activeColor)) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    static String selectColor(ArrayList<String> hand) {
+    static String chooseColor(ArrayList<String> hand) {
         int red = 0;
         int yellow = 0;
         int green = 0;
@@ -60,21 +67,14 @@ public final class BotStrategy {
         for (String card : hand) {
             String color = CardRules.color(card);
 
-            switch (color) {
-                case "R":
-                    red++;
-                    break;
-                case "Y":
-                    yellow++;
-                    break;
-                case "G":
-                    green++;
-                    break;
-                case "B":
-                    blue++;
-                    break;
-                default:
-                    break;
+            if (color.equals("R")) {
+                red++;
+            } else if (color.equals("Y")) {
+                yellow++;
+            } else if (color.equals("G")) {
+                green++;
+            } else if (color.equals("B")) {
+                blue++;
             }
         }
 
