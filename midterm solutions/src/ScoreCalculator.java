@@ -1,16 +1,19 @@
+/** updated ScoreCalculator */
+
+
 import java.util.ArrayList;
 
 /**
- * Computes points from remaining player hands.
+ * Calculates the winner's score from the remaining cards.
  */
 public final class ScoreCalculator {
+
     private ScoreCalculator() {
     }
 
     static int calculateRemainingPoints(ArrayList<ArrayList<String>> hands,
                                         int winnerIndex) {
-
-        int total = 0;
+        int points = 0;
 
         for (int i = 0; i < hands.size(); i++) {
             if (i == winnerIndex) {
@@ -18,10 +21,10 @@ public final class ScoreCalculator {
             }
 
             for (String card : hands.get(i)) {
-                total += CardRules.points(card);
+                points += CardRules.points(card);
             }
         }
 
-        return total;
+        return points;
     }
 }
