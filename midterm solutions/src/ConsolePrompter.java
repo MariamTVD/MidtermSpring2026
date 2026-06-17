@@ -1,70 +1,77 @@
+/** updated ConsolePrompter: */
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Handles CLI interaction separately from game rules.
+ * Handles console input.
+ *
+ * This separates human input from the actual game rules.
  */
 public final class ConsolePrompter {
+
     private ConsolePrompter() {
     }
 
-    static int requestCardChoice(Scanner scanner,
-                                 ArrayList<String> hand,
-                                 String topCard,
-                                 String forcedColor) {
-
+    static int askHumanCardChoice(Scanner scanner,
+                                  ArrayList<String> hand,
+                                  String upCard,
+                                  String calledColor) {
         while (true) {
-            System.out.print("Enter card index/code or draw: ");
+            System.out.print("Choose card index/code or draw: ");
 
-            String value = scanner.nextLine()
-                    .trim()
-                    .toUpperCase();
+            String input = scanner.nextLine().trim().toUpperCase();
 
-            if (value.equals("DRAW")) {
+            if (input.equals("DRAW")) {
                 return -1;
             }
 
             try {
-                int parsed = Integer.parseInt(value);
+                int index = Integer.parseInt(input);
 
-                if (parsed >= 0 && parsed < hand.size()) {
-                    return parsed;
+                if (index >= 0 && index < hand.size()) {
+                    return index;
                 }
             } catch (Exception ignored) {
             }
 
             for (int i = 0; i < hand.size(); i++) {
-                String card = hand.get(i);
-
-                if (card.equals(value)) {
-                    if (CardRules.isLegal(card, topCard, forcedColor)) {
+                if (hand.get(i).equals(input)) {
+                    if (CardRules.isLegal(hand.get(i), upCard, calledColor)) {
                         return i;
                     }
 
-                    System.out.println("Illegal move.");
+                    System.out.println("That card is not legal.");
                 }
             }
 
-            System.out.println("Input not recognized.");
+            System.out.println("Card not found.");
         }
     }
 
-    static String requestColor(Scanner scanner) {
+    static String askColor(Scanner scanner) {
         while (true) {
-            System.out.print("Choose color R/Y/G/B: ");
+            System.out.print("Call color R/Y/G/B: ");
 
-            String color = scanner.nextLine()
-                    .trim()
-                    .toUpperCase();
+            String input = scanner.nextLine().trim().toUpperCase();
 
-            if (color.equals("R")
-                    || color.equals("Y")
-                    || color.equals("G")
-                    || color.equals("B")) {
-                return color;
+            if (input.equals("R")) {
+                return "R";
             }
 
-            System.out.println("Invalid color.");
+            if (input.equals("Y")) {
+                return "Y";
+            }
+
+            if (input.equals("G")) {
+                return "G";
+            }
+
+            if (input.equals("B")) {
+                return "B";
+            }
+
+            System.out.println("Bad color.");
         }
     }
 }
