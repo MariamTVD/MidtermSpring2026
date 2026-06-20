@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="GameHistoryMapper">
+
+    <insert id="insertPlayer">
+        MERGE INTO players (name)
+        KEY(name)
+        VALUES (#{name})
+    </insert>
+
+    <select id="findPlayerIdByName" resultType="long">
+        SELECT id
+        FROM players
+        WHERE name = #{name}
+    </select>
+
+    <insert id="insertGame" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO games (started_at, completed_at, winner_player_id, total_rounds)
+        VALUES (#{startedAt}, #{completedAt}, #{winnerPlayerId}, #{totalRounds})
+    </insert>
+
+    <insert id="insertRound">
+        INSERT INTO rounds (game_id, round_number, winner_player_id, points_scored, completed_at)
+        VALUES (#{gameId}, #{roundNumber}, #{winnerPlayerId}, #{pointsScored}, #{completedAt})
+    </insert>
+
+    <insert id="insertPlayerScore">
+        INSERT INTO player_scores (game_id, player_id, final_score)
+        VALUES (#{gameId}, #{playerId}, #{finalScore})
+    </insert>
+
+    <select id="listRecentGames" resultType="map">
+        SELECT
+        g.id AS game_id,
+        g.completed_at,
+        p.name AS winner_name,
+        g.total_rounds
+        FROM games g
+        LEFT JOIN players p ON g.winner_player_id = p.id
+        ORDER BY g.completed_at DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="playerWinCounts" resultType="map">
+        SELECT
+        p.name AS player_name,
+        COUNT(g.id) AS win_count
+        FROM players p
+        LEFT JOIN games g ON g.winner_player_id = p.id
+        GROUP BY p.name
+        ORDER BY win_count DESC, p.name ASC
+    </select>
+
+    <select id="highestScores" resultType="map">
+        SELECT
+        p.name AS player_name,
+        ps.final_score
+        FROM player_scores ps
+        JOIN players p ON ps.player_id = p.id
+        ORDER BY ps.final_score DESC
+        LIMIT #{limit}
+    </select>
+
+</mapper>
+
