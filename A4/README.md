@@ -2,6 +2,20 @@
 
 This is a refactored CLI UNO-like game.
 
+## Project Location
+
+This Assignment 4 project is located in the `A4` directory.
+
+If you are starting from the repository root, first enter the A4 folder:
+
+```bash
+cd A4
+```
+
+All Maven and Docker commands below should be run from inside the `A4` directory.
+
+## Assignment 4 Additions
+
 Assignment 4 adds project infrastructure for the existing UNO project:
 
 * Maven build support
